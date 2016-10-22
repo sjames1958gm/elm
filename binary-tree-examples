@@ -91,8 +91,10 @@ main =
     , display "flattened" (flatten niceTree)
     , display "isElement" (isElement 4 deepTree)
     , display "isElement" (isElement 4 niceTree)
-    , display "fold summed" (fold (+) 0 niceTree)
-    , display "fold flattened" (fold (++)  niceTree)
+    , display "fold summed" (fsum niceTree)
+    , display "fold flattened" (fflatten niceTree)
+    , display "fold isElement" (fisElement 4 deepTree)
+    , display "fold isElement" (fisElement 4 niceTree)
     ]
 
 
@@ -128,6 +130,18 @@ fold f b tree =
     Empty -> b
     Node a left right ->
       f a (fold f (fold f b right) left)
+      
+fsum : Tree number -> number
+fsum tree = fold (+) 0 tree
+
+fflatten : Tree a -> List a
+fflatten tree = fold (::) [] tree
+
+c x y z = z || x == y
+fisElement : a -> Tree a -> Bool
+fisElement a tree = 
+  fold (c a) False tree
+
 
 {-----------------------------------------------------------------
 
