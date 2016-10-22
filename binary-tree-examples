@@ -91,6 +91,8 @@ main =
     , display "flattened" (flatten niceTree)
     , display "isElement" (isElement 4 deepTree)
     , display "isElement" (isElement 4 niceTree)
+    , display "fold summed" (fold (+) 0 niceTree)
+    , display "fold flattened" (fold (++)  niceTree)
     ]
 
 
@@ -119,6 +121,13 @@ isElement a tree =
     Empty -> False
     Node b left right ->
       a == b || (isElement a left) || (isElement a right)
+      
+fold : (a -> b -> b) -> b -> Tree a -> b
+fold f b tree =
+  case tree of
+    Empty -> b
+    Node a left right ->
+      f a (fold f (fold f b right) left)
 
 {-----------------------------------------------------------------
 
